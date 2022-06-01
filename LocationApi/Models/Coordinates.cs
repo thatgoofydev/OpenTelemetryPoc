@@ -1,4 +1,5 @@
-﻿namespace LocationApi.Models;
+﻿#pragma warning disable CS8618
+namespace LocationApi.Models;
 
 public class Coordinates
 {

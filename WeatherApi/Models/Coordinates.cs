@@ -1,4 +1,5 @@
-﻿namespace WeatherApi.Models;
+﻿#pragma warning disable CS8618
+namespace WeatherApi.Models;
 
 public class Coordinates
 {

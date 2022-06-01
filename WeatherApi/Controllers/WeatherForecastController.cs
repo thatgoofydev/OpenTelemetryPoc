@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WeatherApi.Models;
 using WeatherApi.ServiceClients;
@@ -22,7 +21,7 @@ public class WeatherForecastController : ControllerBase
         Coordinates? coordinates = null; 
         if (city != null)
         {
-            coordinates = await _locationService.GetCoordinates(city)!;
+            coordinates = await _locationService.GetCoordinates(city);
         }
         
         if (Random.Shared.Next(2) == 0)

@@ -1,4 +1,5 @@
 using LocationApi;
+using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -6,6 +7,7 @@ using OpenTelemetry.Trace;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<DatabaseContext>(b => b.UseSqlServer("Server=.;Database=otel_test;Trusted_Connection=True;"));
 builder.Services.AddOpenTelemetryTracing(tracerProviderBuilder =>
 {
     tracerProviderBuilder
@@ -17,7 +19,13 @@ builder.Services.AddOpenTelemetryTracing(tracerProviderBuilder =>
         .SetResourceBuilder(ResourceBuilder.CreateDefault()
             .AddService(Telemetry.ServiceName, serviceVersion: Telemetry.ServiceVersion))
         .AddAspNetCoreInstrumentation()
-        .AddHttpClientInstrumentation();
+        .AddHttpClientInstrumentation()
+        .AddSqlClientInstrumentation(opt =>
+        {
+            opt.SetDbStatementForText = true;
+            opt.RecordException = true;
+            opt.EnableConnectionLevelAttributes = true;
+        });
 });
 
 builder.Services.AddControllers();
